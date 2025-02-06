@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2024 CERN.
+# Copyright (C) 2025 CERN.
 #
 # CDS-Videos is free software; you can redistribute it and/or modify it under
 # the terms of the MIT License; see LICENSE file for more details.
@@ -33,10 +33,6 @@ class CDSVideosLoad(Load):
     ):
         """Constructor."""
         self.db_uri = db_uri
-
-        self.data_dir = data_dir
-        self.tmp_dir = tmp_dir
-        self.existing_data = existing_data
         self.entries = entries
         self.dry_run = dry_run
 
