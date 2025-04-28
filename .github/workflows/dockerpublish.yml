@@ -21,6 +21,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: cds-migrator-kit
+  VIDEOS_IMAGE: videos-migrator-kit
 
 jobs:
   push:
@@ -36,7 +37,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}
+          images: |
+            ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}
+            ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.VIDEOS_IMAGE }}
           tags: |
             type=semver,pattern={{version}}
             # set latest tag for default branch (master)
@@ -54,4 +57,15 @@ jobs:
         with:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and publish second image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./VideosDockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.VIDEOS_IMAGE }}:${{ steps.meta.outputs.version }}
+            ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.VIDEOS_IMAGE }}:latest
           labels: ${{ steps.meta.outputs.labels }}

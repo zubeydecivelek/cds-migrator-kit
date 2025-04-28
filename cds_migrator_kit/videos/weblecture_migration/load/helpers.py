@@ -26,6 +26,7 @@ from cds.modules.flows.tasks import (
 from cds.modules.invenio_deposit.signals import post_action
 from cds.modules.opencast.tasks import _get_opencast_subformat_info
 from cds.modules.records.api import CDSVideosFilesIterator
+from cds.modules.xrootd.utils import file_opener_xrootd
 from celery import chain as celery_chain
 from flask import current_app
 from invenio_db import db
@@ -45,7 +46,7 @@ from cds_migrator_kit.errors import ManualImportRequired
 def copy_file_to_bucket(bucket_id, file_path, is_master=False):
     """Create a FileInstance, move the file to FileInstance storage, return the created object version."""
     logger_files = logging.getLogger("files")
-    
+
     def _cleanup_on_failure(error_msg):
         """Attempt to delete the file instance and log errors if copy fails."""
         try:
@@ -55,7 +56,7 @@ def copy_file_to_bucket(bucket_id, file_path, is_master=False):
             logger_files.error(f"[ERROR] Cleanup failed after copy file fail: {cleanup_error}")
         if is_master: # Fail if file is master
             raise ManualImportRequired(error_msg, stage="load")
-    
+
     try:
         video_bucket = Bucket.get(bucket_id)
         video_name = os.path.basename(file_path)
@@ -68,14 +69,14 @@ def copy_file_to_bucket(bucket_id, file_path, is_master=False):
         )
         fp = file_storage.open(mode="wb")
         full_path = Path(fp.name.decode()).resolve()
-        
+
         # Check if the destination already exists
         if full_path.exists() and full_path.is_dir() and any(full_path.iterdir()):
             raise FileExistsError(f"{full_path} already exists.")
 
         # Copy file to storage.
         shutil.copy2(file_path, full_path)
-        
+
         # Control if the file copied succesfully
         if os.path.getsize(file_path) != os.path.getsize(full_path):
             error_message = (
@@ -91,7 +92,7 @@ def copy_file_to_bucket(bucket_id, file_path, is_master=False):
 
         # Update FileInstance
         file_checksum = file_storage.checksum()
-        file_size = os.path.getsize(file_storage.fileurl)        
+        file_size = os.path.getsize(file_storage.fileurl)
         file.set_uri(file_storage.fileurl, file_size, file_checksum)
 
         # Create object version
@@ -130,7 +131,7 @@ def create_project(project_metadata, submitter):
 
 def create_video(project_deposit, video_metadata, video_file_path, submitter):
     """Create a video in project with metadata and master video file.
-    
+
     Returns video_deposit and master_object"""
     try:
         # Create video_deposit
@@ -146,9 +147,9 @@ def create_video(project_deposit, video_metadata, video_file_path, submitter):
         bucket_id = video_deposit["_buckets"]["deposit"]
     except Exception as e:
         raise ManualImportRequired(f"Video creation failed! {e}", stage="load")
-    
+
     object_version = copy_file_to_bucket(bucket_id=bucket_id, file_path=video_file_path, is_master=True)
-    
+
     return video_deposit, object_version
 
 
@@ -169,7 +170,7 @@ def create_flow(object_version, deposit_id, user_id):
             payload=payload,
         )
         payload["flow_id"] = str(flow_metadata.id)
-        
+
         flow_metadata.payload = payload
         flow = FlowService(flow_metadata)
         # Flag the change
@@ -198,7 +199,7 @@ def publish_video_record(deposit_id):
         return video_published
     except Exception as e:
         raise ManualImportRequired(f"Deposit:{deposit_id} Publish failed: {e}", stage="load")
-    
+
 
 def extract_metadata(payload):
     """Extract the metadata of the master video file."""
@@ -226,7 +227,7 @@ def run_frames_task(payload):
             flow_task_metadata = celery_task.get_or_create_flow_task()
             flow_task_metadata.status = FlowTaskStatus.FAILURE
             logger_flows.error(f"[ERROR] ExtractFramesTask failed! Deposit id: {payload['deposit_id']}, flow id: {payload['flow_id']}")
-    
+
 
 def copy_frames(payload, frame_paths):
     """Load frames for the master video file without running the celery task.
@@ -241,14 +242,14 @@ def copy_frames(payload, frame_paths):
     """
     logger_flows = logging.getLogger("flows")
     logger_files = logging.getLogger("files")
-    
+
     frames_payload = payload.copy()
     if not len(frame_paths) == 10:
         logger_flows.warning(f"[WARNING] Deposit: {frames_payload['deposit_id']} frames are creating with celery task.")
         # Missing/extra frames, don't use them, create with celery task
         run_frames_task(frames_payload)
         return
-    
+
     version_id = frames_payload["version_id"]
     object_version = as_object_version(version_id)
 
@@ -265,30 +266,40 @@ def copy_frames(payload, frame_paths):
     # Calculate time positions
     options = frames_task._time_position(
         duration=object_version.get_tags()["duration"],
-        frames_start=0, 
+        frames_start=0,
         frames_end=90,
         frames_gap=10,
     )
     # Needed for creating gif file
     output_folder = None
     try:
-        # Create ObjectVersions with frames using ExtractFramesTask._create_frames
-        frames = frames_task._create_frames(
-            frame_paths,
-            object_version,
-            options.get("start_time"),
-            options.get("time_step"),
-        )
+        # Create ObjectVersions like ExtractFramesTask._create_frames
+        # Since frame files already sorted during transform we can rename:frame-1.jpg
+        # Renaming is needed because cds-videos getting the first frame file by it's name(frame-1.jpg) for the poster
+        start_time = options.get("start_time")
+        time_step = options.get("time_step")
+        [frames_task._create_object(
+                bucket=object_version.bucket,
+                key=f"frame-{i+1}.jpg",
+                stream=file_opener_xrootd(filename, "rb"),
+                size=os.path.getsize(filename),
+                media_type="image",
+                context_type="frame",
+                master_id=object_version.version_id,
+                timestamp=start_time + (i + 1) * time_step,
+            )
+            for i, filename in enumerate(frame_paths)]
+
         # Temp folder to create gif file
         output_folder = tempfile.mkdtemp()
         frames_task._create_gif(
             bucket=str(object_version.bucket.id),
-            frames=frames,
+            frames=frame_paths,
             output_dir=output_folder,
             master_id=version_id,
         )
         flow_task_metadata.status = FlowTaskStatus.SUCCESS
-               
+
     except FileNotFoundError as e:
         logger_files.error(
             f"[ERROR] Frame file not found: {e} | Deposit ID: {payload['deposit_id']}, Flow ID: {payload['flow_id']}"
@@ -306,7 +317,7 @@ def copy_frames(payload, frame_paths):
         if output_folder:
             shutil.rmtree(output_folder, ignore_errors=True)
 
-        
+
 def _copy_subformat(payload, preset_quality, path):
     """Copy the subformat file to bucket and add subformat tags"""
     obj = copy_file_to_bucket(payload["bucket_id"], path)
@@ -327,7 +338,7 @@ def _copy_subformat(payload, preset_quality, path):
     for key, value in info.items():
         ObjectVersionTag.create(obj, key, str(value))
     return obj
-        
+
 
 def transcode_task(payload, subformats):
     """Load subformats for the master video file without running celery task.
@@ -341,20 +352,20 @@ def transcode_task(payload, subformats):
     subformat_paths (list): A list of file paths of the subformats.
     """
     logger_flows = logging.getLogger("flows")
-    
+
     for item in subformats:
         path = item["path"]
-        preset_quality = item["quality"]    
+        preset_quality = item["quality"]
         quality_config = current_app.config["CDS_OPENCAST_QUALITIES"].get(preset_quality)
-        
+
         # If it's different subformat quality than (360,480,720...) don't upload
-        if not quality_config: 
+        if not quality_config:
             logger_flows.warning(f"[WARNING] Deposit: {payload['deposit_id']} Subformat quality:{preset_quality} not found in config, skipping {path}")
             continue
         # It'll log if fails
         _copy_subformat(payload, preset_quality, path)
         db.session.commit()
-    
+
     # Create TranscodeVideoTask
     subformat_payload = payload.copy()
     transcode_task, kwargs = AVCFlowCeleryTasks.create_task(
@@ -388,11 +399,11 @@ def copy_additional_files(bucket_id, additional_files):
     for path in additional_files:
         # Copy the file to FileInstance and create ObjectVersion
         obj = copy_file_to_bucket(bucket_id, path)
-               
+
         # It'll log if copying fail
         if not obj:
             continue
-        
+
         # Add tags to the additional file
         ObjectVersionTag.create_or_update(obj, "context_type", "additional_file")
         _create_tags(obj)
