@@ -675,6 +675,30 @@ records:
       missing_users: cds_migrator_kit/rdm/data/users
       communities_ids:
         - "88a105fe-4713-493b-b555-6ab398599d21"
+  ship:
+    data_dir: cds_migrator_kit/rdm/data/ship
+    create_inclusion_request: true
+    plots: true
+    extract:
+      dirpath: cds_migrator_kit/rdm/data/ship/dump/
+    transform:
+      files_dump_dir: cds_migrator_kit/rdm/data/ship/files/
+      missing_users: cds_migrator_kit/rdm/data/users
+      communities_ids:
+        - "7277793b-5fce-458a-a3c4-e05a6cc43c69"
+  ship-restricted:
+    data_dir: cds_migrator_kit/rdm/data/ship-restricted
+    restricted: "True"
+    plots: true
+    access_grants_view:
+      - ship-collaboration-dynamic
+    extract:
+      dirpath: cds_migrator_kit/rdm/data/ship-restricted/dump/
+    transform:
+      files_dump_dir: cds_migrator_kit/rdm/data/ship-restricted/files/
+      missing_users: cds_migrator_kit/rdm/data/users
+      communities_ids:
+        - "7277793b-5fce-458a-a3c4-e05a6cc43c69"
 comments:
   faser-drafts:
     dir_path: /migration/faser-drafts/comments/
