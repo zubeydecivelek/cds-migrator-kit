@@ -61,6 +61,7 @@ def add_contributor(self, name, role):
 
 
 def validate_copyright(self, key, holder, year):
+    """Validate and merge copyright holder and year into the record."""
     if "copyright" in self:
         copyright = self["copyright"]
         if holder.lower() not in copyright["holder"].lower():
@@ -350,6 +351,7 @@ def subject_indicators(self, key, value):
 def subject_categories(self, key, value):
     """
     Translates subject_category as keywords from tag 65017,65027.
+
     Digitization project: EPFL_MC Categories.
     """
     keyword = value.get("a", "").strip()
@@ -397,7 +399,6 @@ def creation_date(self, key, value):
     - cataloguer 'a' subfield (name of the curator)
     - cataloguer level 'b' subfield (curator?)
     """
-
     b_value = value.get("b", "").strip().lower()
     if b_value and b_value != "curator":
         raise UnexpectedValue(field=key, subfield="b", value=b_value)

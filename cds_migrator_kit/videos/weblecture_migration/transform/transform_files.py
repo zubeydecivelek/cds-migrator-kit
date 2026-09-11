@@ -119,7 +119,6 @@ class TransformFiles:
 
         Composite videos will always be inside the media_data folder.
         """
-
         required_resolutions = {1080, 720, 480, 360}
         composite_videos = {}
 
