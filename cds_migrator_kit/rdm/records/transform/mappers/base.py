@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """Base classes shared by all CDS-RDM record field mappers."""
+
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 

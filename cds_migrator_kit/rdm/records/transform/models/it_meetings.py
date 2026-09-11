@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM IT Meetings report model."""
+
 from cds_migrator_kit.rdm.records.transform.models.base_record import (
     rdm_base_record_model,
 )

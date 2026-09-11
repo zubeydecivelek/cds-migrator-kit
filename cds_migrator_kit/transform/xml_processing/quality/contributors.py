@@ -6,9 +6,9 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM contributors migration module."""
-import idutils
 import re
 
+import idutils
 from dojson.utils import force_list
 
 from cds_migrator_kit.errors import UnexpectedValue
@@ -176,7 +176,11 @@ def extract_json_contributor_ids(info, orcid_subfield="k"):
                 if new_id not in ids:
                     ids.append(new_id)
             else:
-                raise UnexpectedValue(message="Author has invalid orcid", value=author_orcid, stage="transform")
+                raise UnexpectedValue(
+                    message="Author has invalid orcid",
+                    value=author_orcid,
+                    stage="transform",
+                )
 
     inspire = info.get("i", "")
     if inspire and inspire.startswith("INSPIRE-"):

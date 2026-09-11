@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """Top-level ``record_json_output`` field mappers."""
+
 from cds_migrator_kit.rdm.records.transform.mappers.base import FieldMapper
 
 

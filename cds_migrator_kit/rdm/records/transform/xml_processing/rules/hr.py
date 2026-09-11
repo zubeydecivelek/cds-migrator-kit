@@ -1,3 +1,5 @@
+"""CDS-RDM HR migration rules."""
+
 import re
 
 from dateutil.parser import ParserError, parse
@@ -80,6 +82,7 @@ def additional_desc(self, key, value):
 @require(["a"])
 @for_each_value
 def hr_subjects(self, key, value):
+    """Translates HR subjects fields."""
     keyword = value.get("a")
     if key == "6531_":
         keyword = value.get("a")
@@ -136,6 +139,7 @@ def collection(self, key, value):
 @model.over("creators", "(^110__)")
 @for_each_value
 def corpo_author(self, key, value):
+    """Translates corporate author."""
     author = value.get("a", "").strip()
     if not author:
         raise UnexpectedValue(subfield="a", value=value, field=key)
@@ -275,6 +279,7 @@ def description(self, key, value):
 @model.over("additional_descriptions", "(^590__)")
 @for_each_value
 def translated_description(self, key, value):
+    """Translates translated description."""
     description_text = value.get("a", "")
     if description_text:
         _additional_description = {

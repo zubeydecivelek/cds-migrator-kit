@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """A community-inclusion request for one migrated CDS record."""
+
 from invenio_accounts.models import User
 from invenio_db import db
 
@@ -56,7 +57,6 @@ class RecordRequest:
     def __bool__(self):
         """True when there's request data to act on."""
         return bool(self.data)
-
 
     def _resolve_reviewers(self, reviewer_names):
         """Resolve raw reviewer name/email strings to RDM reviewer entries.

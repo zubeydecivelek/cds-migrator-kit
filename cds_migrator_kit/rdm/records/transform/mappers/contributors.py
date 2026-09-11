@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """Creators/contributors field mapping: affiliations and person-id lookup."""
+
 from copy import deepcopy
 
 from idutils import normalize_ror
@@ -124,11 +125,7 @@ def _lookup_person_id(creator):
             user_id = ui.user.id
             names = NamesMetadata.query.filter_by(internal_id=str(user_id)).all()
             name = next(
-                (
-                    name
-                    for name in names
-                    if "unlisted" not in name.json.get("tags", [])
-                ),
+                (name for name in names if "unlisted" not in name.json.get("tags", [])),
                 None,
             )
     # filter out cern person_id

@@ -18,6 +18,7 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
 """CDS-RDM Summer student model."""
+
 from cds_migrator_kit.rdm.records.transform.models.base_publication_record import (
     rdm_base_publication_model,
 )

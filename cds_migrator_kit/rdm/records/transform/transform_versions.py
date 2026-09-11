@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """Builds all of a record's versions - ``MigrationEntry["versions"]``."""
+
 from collections import OrderedDict
 from copy import deepcopy
 
@@ -120,4 +121,3 @@ class RecordVersionsTransform:
             )
             return True
         return False
-

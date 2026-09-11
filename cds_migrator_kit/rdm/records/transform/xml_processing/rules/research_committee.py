@@ -74,7 +74,7 @@ _DEFAULT_REPORT_TYPES = {
     "RD": {"id": "publication-report"},
     "STATUS-REPORT": {"id": "publication-report"},
     "MEMO": {"id": "publication-memorandum"},
-    "INTERNAL-REPORT":  {"id": "publication-report"},
+    "INTERNAL-REPORT": {"id": "publication-report"},
 }
 
 # Longest type-token-sequence first, so "STATUS-REPORT" (2 tokens) is tried
@@ -126,7 +126,7 @@ _SERIES_RESOURCE_TYPES = {
     "rapport": {"id": "publication-report"},
     "technical note": {"id": "publication-technicalnote"},
     "note": {"id": "publication-technicalnote"},
-    "decision taken at the meeting": {"id": "publication-meetingminutes"}
+    "decision taken at the meeting": {"id": "publication-meetingminutes"},
 }
 
 
@@ -145,7 +145,9 @@ _RANK_TITLE = -1
 
 
 def _set_resource_type_if_higher_priority(self, resource_type, rank):
-    """Set `resource_type` (+ its `_resource_type_rank`), but only if
+    """Set resource_type only if the new rank outranks the current one.
+
+    Set `resource_type` (+ its `_resource_type_rank`), but only if
     `rank` outranks (is strictly lower than) whatever has already been
     decided for this record so far - by an earlier field in tag order, or
     by a higher-priority rule matching the same field.
@@ -176,7 +178,9 @@ def _committee_report_type(committee, type_code):
 
 
 def _apply_committee_report_number(self, identifier):
-    """Detect a `<COMMITTEE>-<TYPE>-<NUMBER>` report number (e.g.
+    """Derive resource_type from a committee report number.
+
+    Detect a `<COMMITTEE>-<TYPE>-<NUMBER>` report number (e.g.
     "SPSC-I-170") and derive the record's resource_type - and, for some
     types, an extra subject - from the type code.
 
@@ -247,7 +251,9 @@ _UNANCHORED_TOKEN_LENGTHS = sorted(
 
 
 def _apply_generic_report_number_type(self, identifier):
-    """Detect one of `_UNANCHORED_REPORT_TYPES`'s tokens anywhere in a
+    """Derive resource_type from an unanchored report-number type token.
+
+    Detect one of `_UNANCHORED_REPORT_TYPES`'s tokens anywhere in a
     report number and derive the record's resource_type from it - see the
     comment above `_UNANCHORED_REPORT_TYPES` for why this is safe without a
     committee gate, unlike `_apply_committee_report_number`.
@@ -274,7 +280,9 @@ def _apply_generic_report_number_type(self, identifier):
 
 
 def _apply_series_resource_type(self, value_a):
-    """Detect a document type spelled out in 490__$a (see
+    """Derive resource_type from a 490__ series statement.
+
+    Detect a document type spelled out in 490__$a (see
     `_SERIES_RESOURCE_TYPES`) and derive the record's resource_type from it.
 
     See `_set_resource_type_if_higher_priority` and `_RANK_SERIES` for how
@@ -288,7 +296,9 @@ def _apply_series_resource_type(self, value_a):
 
 
 def _free_text_resource_type(text):
-    """Return the resource_type for text containing one of
+    """Return a resource_type matched from free-text phrases, or None.
+
+    Return the resource_type for text containing one of
     `_SERIES_RESOURCE_TYPES`'s phrases anywhere in it (e.g. "Draft minutes
     of the third meeting of the EEC ...",
     https://cds.cern.ch/record/1015008, or "Addendum 1"), matched at a word
@@ -305,7 +315,9 @@ def _free_text_resource_type(text):
 
 
 def _apply_edition_resource_type(self, value_a):
-    """Detect a document type spelled out in 250__$a (edition statement,
+    """Derive resource_type from a 250__ edition statement.
+
+    Detect a document type spelled out in 250__$a (edition statement,
     e.g. "Addendum", "Addendum 1" - see `_free_text_resource_type`) and
     derive the record's resource_type from it. Matched the same way as the
     title (anywhere, word boundary) rather than 490__ series' exact match,
@@ -324,7 +336,9 @@ def _apply_edition_resource_type(self, value_a):
 
 
 def _apply_title_resource_type(self, title_value):
-    """Detect a document type mentioned anywhere in the 245__ title (see
+    """Derive resource_type from a document type mentioned in the title.
+
+    Detect a document type mentioned anywhere in the 245__ title (see
     `_free_text_resource_type`) and derive the record's resource_type from
     it.
 

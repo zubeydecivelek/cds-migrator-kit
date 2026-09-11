@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """Validates an EP committee approval request's legacy history."""
+
 from datetime import datetime, timezone
 
 from cds_rdm.requests.committee_approval import APPRN_PID_TYPE
@@ -41,6 +42,7 @@ class ApprovalRequest:
         resource_type=None,
         dry_run=False,
     ):
+        """Constructor."""
         self.ep_approval = ep_approval
         self.legacy_recid = legacy_recid
         self.title = title

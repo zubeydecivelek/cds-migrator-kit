@@ -21,7 +21,7 @@ from cds_migrator_kit.transform.xml_processing.models.base import model
 
 @model.over("reviewers", "^906__")
 def record_reviewer(self, key, value):
-    """Translate request reviewers.
+    r"""Translate request reviewers.
 
     906__m holds the reviewer's email directly, same as 859__f does for
     the submitter. 906__p instead holds one or more "Family name, Given

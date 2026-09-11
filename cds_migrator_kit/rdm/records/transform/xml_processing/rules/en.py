@@ -1,3 +1,5 @@
+"""CDS-RDM EN migration rules."""
+
 import math
 
 from dateutil.parser import ParserError, parse

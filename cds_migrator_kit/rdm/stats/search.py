@@ -50,7 +50,11 @@ def os_search(
     ex = None
     i = 0
     q = generate_query(
-        doc_type, identifier, legacy_to_rdm_events_map, less_than_date, file_ids=file_ids
+        doc_type,
+        identifier,
+        legacy_to_rdm_events_map,
+        less_than_date,
+        file_ids=file_ids,
     )
     while i < 10:
         try:

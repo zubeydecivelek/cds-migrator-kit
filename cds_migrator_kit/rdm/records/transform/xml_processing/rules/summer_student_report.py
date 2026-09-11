@@ -17,6 +17,7 @@
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 """Common RDM fields."""
+
 from dateutil.parser import ParserError, parse
 from dojson.errors import IgnoreKey
 from dojson.utils import force_list

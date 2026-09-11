@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """Creates a community-inclusion request from a ``RecordRequest``."""
+
 import datetime
 
 from invenio_access.permissions import system_identity
@@ -30,7 +31,7 @@ class RequestLoad:
     ``ParentLoad``.
     """
 
-    def __init__(self, entry:MigrationEntry):
+    def __init__(self, entry: MigrationEntry):
         """Constructor.
 
         :param record_request: the built ``RecordRequest`` for this entry

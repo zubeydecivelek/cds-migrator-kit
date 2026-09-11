@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM transform user."""
+
 import csv
 import json
 from copy import deepcopy
@@ -68,6 +69,7 @@ class CDSRDMUserTransform(Transform):
     """CDSUserTransform."""
 
     def __init__(self, workers=None, throw=False, dojson_model=None):
+        """Constructor."""
         self.dojson_model = dojson_model
         super().__init__(workers, throw)
 

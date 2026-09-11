@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM CMS note model."""
+
 from cds_migrator_kit.rdm.records.transform.models.research import (
     research_model,
 )
@@ -18,7 +19,7 @@ class ANTARESResearchModel(CdsOverdo):
     __query__ = '980__:ANTARESCERNTALK OR (980__.a:"POSTER" AND 693__.e:ANTARES) OR 980__:PRIVANTARES -980__:THESIS -037__:CERN-STUDENTS-Note-* -980__:DELETED -980__.c:MIGRATED -980__.a:DUMMY -690C_.a:SCICOM'
 
     __ignore_keys__ = {
-        "923__r", # place of photo, present in posters but redundant
+        "923__r",  # place of photo, present in posters but redundant
         "0248_a",
         "0248_p",
         "0248_q",

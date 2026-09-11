@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM migration streams module."""
+
 from invenio_rdm_migrator.streams import StreamDefinition
 from invenio_rdm_migrator.transform import IdentityTransform
 

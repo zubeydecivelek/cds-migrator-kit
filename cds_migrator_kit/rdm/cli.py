@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM command line module."""
+
 import logging
 from datetime import datetime
 from pathlib import Path

@@ -69,6 +69,7 @@ class CDSCommentsLoad(Load):
         return []
 
     def get_oldest_record(self, parent_pid_value):
+        """Return the oldest version of a record by parent PID."""
         latest_record = current_rdm_records_service.read_latest(
             identity=system_identity, id_=parent_pid_value
         )

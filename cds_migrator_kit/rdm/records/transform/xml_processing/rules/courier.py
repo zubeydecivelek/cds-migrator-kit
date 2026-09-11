@@ -1,3 +1,5 @@
+"""CDS-RDM Courier rules."""
+
 import re
 from urllib.parse import ParseResult, urlparse
 
@@ -138,6 +140,7 @@ def imprint_info(self, key, value):
 @model.over("additional_descriptions", "(^500__)")
 @for_each_value
 def additional_descriptions(self, key, value):
+    """Translates additional descriptions."""
     description = value.get("a", "").strip()
     if len(description) < 3:
         raise IgnoreKey("additional_descriptions")
@@ -149,7 +152,6 @@ def additional_descriptions(self, key, value):
 @model.over("description", "^520__", override=True)
 def description(self, key, value):
     """Translates description."""
-
     description_text = value.get("a", "")
     description_text_b = value.get("b", "")
     description_text = description_text.replace("<!--HTML-->", "").strip()
@@ -165,6 +167,7 @@ def description(self, key, value):
 @model.over("additional_descriptions", "(^590__)")
 @for_each_value
 def translated_description(self, key, value):
+    """Translates translated description."""
     description_text = value.get("a", "")
     description_text_b = value.get("b", "")
     description_text = description_text.replace("<!--HTML-->", "").strip()
@@ -238,6 +241,7 @@ def record_submitter(self, key, value):
 @model.over("url_identifiers", "^8564_", override=True)
 @for_each_value
 def urls_bulletin(self, key, value):
+    """Translates bulletin URLs."""
     content_type = value.get("x", "")
 
     if content_type == "icon":

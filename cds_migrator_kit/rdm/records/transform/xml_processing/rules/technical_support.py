@@ -1,17 +1,23 @@
+"""CDS-RDM technical support rules."""
+
 import math
 
 from dateutil.parser import ParserError, parse
 from dojson.errors import IgnoreKey
 from dojson.utils import force_list
+
 from cds_migrator_kit.errors import UnexpectedValue
-from cds_migrator_kit.transform.xml_processing.quality.decorators import for_each_value, \
-    require
+from cds_migrator_kit.transform.xml_processing.quality.decorators import (
+    for_each_value,
+    require,
+)
 from cds_migrator_kit.transform.xml_processing.quality.parsers import StringValue
-from .base import subjects as base_subjects
+
 from ...config import IGNORED_THESIS_COLLECTIONS
 from ...models.technical_support import technical_support_model as model
 from .base import corporate_author as base_corporate_author
 from .base import normalize
+from .base import subjects as base_subjects
 
 
 @model.over("administrative_unit", "^710__", override=True)

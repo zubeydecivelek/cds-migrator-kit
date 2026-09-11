@@ -1,3 +1,5 @@
+"""CDS-RDM base publication migration model."""
+
 from cds_migrator_kit.rdm.records.transform.models.base_record import (
     rdm_base_record_model,
 )

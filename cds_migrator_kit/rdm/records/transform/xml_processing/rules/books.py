@@ -1,3 +1,5 @@
+"""CDS-RDM books migration rules."""
+
 import re
 
 from dateutil.parser import ParserError, parse
@@ -20,7 +22,6 @@ from ...models.books import book_model as model
 @for_each_value
 def corpo_creator(self, key, value):
     """Translates creators field."""
-
     creator = value.get("a", "").strip()
 
     if not creator:
@@ -47,6 +48,7 @@ def collection(self, key, value):
 @model.over("keywords", "^697C_")
 @for_each_value
 def keywords(self, key, value):
+    """Translates keywords into subjects."""
     val = value.get("a")
     keyword_map = {"LEGSERLIB": "Legal service", "BOOKSHOP": "BOOKSHOP"}
 

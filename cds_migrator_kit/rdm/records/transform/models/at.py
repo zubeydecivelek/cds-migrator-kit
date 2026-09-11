@@ -5,6 +5,8 @@
 # CDS-RDM is free software; you can redistribute it and/or modify it under
 # the terms of the MIT License; see LICENSE file for more details.
 
+"""CDS-RDM AT migration model."""
+
 from cds_migrator_kit.rdm.records.transform.models._config import IGNORE_SYSTEM_KEYS
 from cds_migrator_kit.rdm.records.transform.models.base_publication_record import (
     rdm_base_publication_model,

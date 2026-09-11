@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM migration stats events generator module."""
+
 import json
 from copy import deepcopy
 from datetime import datetime

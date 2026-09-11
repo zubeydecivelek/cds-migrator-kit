@@ -36,8 +36,10 @@ class CommentsRunner:
         self.log_dir = Path(log_dir)
 
         self.logger = CommentsLogger(self.log_dir, collection)
-        collection_dirpath=collection_config["dir_path"]
-        comments_metadata_filepath = os.path.join(collection_dirpath, "comments_metadata.json")
+        collection_dirpath = collection_config["dir_path"]
+        comments_metadata_filepath = os.path.join(
+            collection_dirpath, "comments_metadata.json"
+        )
 
         self.stream = Stream(
             stream_definition.name,
@@ -71,7 +73,7 @@ class CommenterRunner:
         """Constructor."""
         config = read_config(config_filepath)
         collection_config = config["comments"][collection]
-        dirpath=collection_config["dir_path"]
+        dirpath = collection_config["dir_path"]
         missing_users_dir = os.path.join(dirpath, "users")
         filename = "missing_commentors_from_ldap.json"
 

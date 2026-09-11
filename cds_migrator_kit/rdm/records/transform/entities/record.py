@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """The RDM record's own content - ``MigrationEntry["record"]``."""
+
 from copy import deepcopy
 from typing import Any, TypedDict
 
@@ -226,8 +227,7 @@ class RecordEntry:
         creation date) and no creation date, raise an exception.
         """
         if not raw_dump_entry.get("files") and not (
-            dojson_entry.get("status_week_date")
-            or dojson_entry.get("publication_date")
+            dojson_entry.get("status_week_date") or dojson_entry.get("publication_date")
         ):
             raise ManualImportRequired(
                 message="Record missing publication date",

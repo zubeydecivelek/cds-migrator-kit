@@ -1,3 +1,5 @@
+"""CDS-RDM research migration rules."""
+
 import re
 from datetime import datetime
 
@@ -31,6 +33,7 @@ from .base import normalize
 
 @model.over("isbns", "^020__", override_tag=True)
 def isbn(self, key, value):
+    """Translates ISBN identifiers."""
     _custom_fields = self.get("custom_fields", {})
     _isbn = StringValue(value.get("a", "")).parse()
     _isbn_u = StringValue(value.get("u", "")).parse()
@@ -66,6 +69,7 @@ def isbn(self, key, value):
 @model.over("related_identifiers", "(^022__)")
 @for_each_value
 def issn(self, key, value):
+    """Translates ISSN identifiers."""
     _issn = StringValue(value.get("a", "")).parse()
     if _issn:
         try:
@@ -100,6 +104,7 @@ def udc(self, key, value):
 @model.over("creators", "(^110__)")
 @for_each_value
 def corpo_author(self, key, value):
+    """Translates corporate author."""
     author = value.get("a", "").strip()
     if not author:
         raise UnexpectedValue(subfield="a", value=value, field=key)
@@ -182,6 +187,7 @@ def abbreviation(self, key, value):
 
 @model.over("funding", "(^536__)")
 def funding(self, key, value):
+    """Translates funding information."""
     _custom_fields = self.get("custom_fields", {})
     programme = value.get("a")
     _access_info = value.get("r", "").strip().lower()
@@ -225,7 +231,7 @@ def funding(self, key, value):
 
 @model.over("_approval", "(^591__)", override=True)
 def status(self, key, value):
-
+    """Translates status fields."""
     val_a = value.get("a", "").lower().strip()
     val_b = value.get("b", "").lower().strip()
 
@@ -246,6 +252,7 @@ def status(self, key, value):
 
 @model.over("custom_fields", "(^773__)")
 def journal(self, key, value):
+    """Translates journal fields."""
     _custom_fields = self.get("custom_fields", {})
     journal_fields = _custom_fields.get("journal:journal", {})
     year = StringValue(value.get("y", "")).parse()
@@ -398,7 +405,7 @@ def access_grants(self, key, value):
 @model.over("internal_notes", "^562__")
 @for_each_value
 def internal_notes(self, key, value):
-    """Translate internal notes"""
+    """Translate internal notes."""
     note = value.get("c", "")
     return {"note": note}
 
@@ -406,6 +413,7 @@ def internal_notes(self, key, value):
 @model.over("contributors", "^901__")
 @for_each_value
 def organisation(self, key, value):
+    """Translates organisation contributors."""
     contributor = value.get("u", "")
     return {
         "person_or_org": {
@@ -419,6 +427,7 @@ def organisation(self, key, value):
 @model.over("request_reviewers", "^906__", override=True)
 @for_each_value
 def request_reviewers(self, key, value):
+    """Translates request reviewers."""
     name = StringValue(value.get("p", "")).parse().strip()
     email = StringValue(value.get("m", "")).parse().strip()
 

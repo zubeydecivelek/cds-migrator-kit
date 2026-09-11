@@ -1,3 +1,5 @@
+"""CDS-RDM IT migration rules."""
+
 import math
 import re
 
@@ -122,6 +124,7 @@ def resource_type(self, key, value):
 
 @model.over("meeting_info", "^111__")
 def meeting(self, key, value):
+    """Translates meeting fields."""
     _custom_fields = self.setdefault("custom_fields", {})
     meeting_fields = _custom_fields.get("meeting:meeting", {})
     meeting_fields["title"] = StringValue(value.get("a", "")).parse()
@@ -368,7 +371,6 @@ def imprint_dates(self, key, value):
 @for_each_value
 def conference_title(self, key, value):
     """Translates notes and conference meeting."""
-
     # --- MEETING FIELD ---
     conference_title = StringValue(value.get("d")).parse()
     if conference_title:
@@ -387,6 +389,7 @@ def conference_title(self, key, value):
 @model.over("additional_descriptions", "(^590__)")
 @for_each_value
 def translated_description(self, key, value):
+    """Translates translated description."""
     description_text = value.get("a", "")
     description_text_b = value.get("b", "")
     description_text = description_text.replace("<!--HTML-->", "").strip()
