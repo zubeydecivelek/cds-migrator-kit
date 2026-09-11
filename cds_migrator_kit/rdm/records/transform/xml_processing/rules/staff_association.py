@@ -12,6 +12,8 @@ from dojson.errors import IgnoreKey
 from cds_migrator_kit.errors import UnexpectedValue
 from cds_migrator_kit.rdm.records.transform.xml_processing.rules.base import (
     additional_titles,
+)
+from cds_migrator_kit.rdm.records.transform.xml_processing.rules.base import (
     title as base_title,
 )
 from cds_migrator_kit.transform.xml_processing.quality.decorators import for_each_value

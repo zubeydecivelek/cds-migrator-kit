@@ -1,3 +1,5 @@
+"""CDS-RDM beams migration rules."""
+
 from dateutil.parser import ParserError, parse
 from dojson.errors import IgnoreKey
 

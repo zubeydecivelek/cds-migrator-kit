@@ -35,9 +35,7 @@ class CommentsLogger:
         self.log_dir = Path(log_dir)
         self.collection = collection
         # Per-collection file logs + CSV; shared dir when collection is unset
-        self.files_dir = (
-            self.log_dir / collection if collection else self.log_dir
-        )
+        self.files_dir = self.log_dir / collection if collection else self.log_dir
         os.makedirs(self.files_dir, exist_ok=True)
 
         # Initializes logging format and file handlers for logging module (not CSV report).

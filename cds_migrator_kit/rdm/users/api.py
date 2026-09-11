@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM transform user."""
+
 import csv
 import json
 from copy import deepcopy

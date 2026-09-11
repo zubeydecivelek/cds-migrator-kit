@@ -1,3 +1,5 @@
+"""CDS-RDM annual report rules."""
+
 from dateutil.parser import ParserError, parse
 from dojson.errors import IgnoreKey
 from idutils.normalizers import normalize_isbn
@@ -22,6 +24,7 @@ def collection(self, key, value):
 
 @model.over("subjects", "^65017", override=True)
 def subjects(self, key, value):
+    """Ignore subjects for annual reports."""
     raise IgnoreKey("subjects")
 
 
@@ -29,7 +32,6 @@ def subjects(self, key, value):
 @for_each_value
 def related_identifiers_custom_fields(self, key, value):
     """Handles both custom fields and related identifiers from 962_."""
-
     # ------------------------------
     # Related Identifiers
     # ------------------------------
@@ -73,6 +75,7 @@ def related_identifiers_custom_fields(self, key, value):
 
 @model.over("isbn", "(^020__)", override=True)
 def isbn(self, key, value):
+    """Translates ISBN identifiers."""
     _isbn = StringValue(value.get("a", "")).parse()
     _isbn_material = StringValue(value.get("u", "")).parse()
     if _isbn:

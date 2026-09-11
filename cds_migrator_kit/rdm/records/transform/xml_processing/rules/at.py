@@ -5,6 +5,9 @@
 # CDS-RDM is free software; you can redistribute it and/or modify it under
 # the terms of the MIT License; see LICENSE file for more details.
 #
+
+"""CDS-RDM AT migration rules."""
+
 from dojson.errors import IgnoreKey
 
 from cds_migrator_kit.transform.xml_processing.quality.decorators import (
@@ -19,6 +22,7 @@ from ...models.at import at_model as model
 @model.over("contributors", "^541__")
 @for_each_value
 def contact_person(self, key, value):
+    """Translates contact person."""
     contact_person = value.get("a", None)
     if contact_person is None:
         raise IgnoreKey("contributors")

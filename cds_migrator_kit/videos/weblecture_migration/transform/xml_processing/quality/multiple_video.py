@@ -228,6 +228,7 @@ def parse_entry(entry):
 def grouped_values_with_code(entries):
     """
     Group flat entries into logical MARC-like groups.
+
     A new group starts when a new 9 subfield appears.
     """
     groups = []
@@ -253,6 +254,8 @@ def grouped_values_with_code(entries):
 
 def get_single_selector(event_id):
     """
+    Return the single letter selector from an event id, or None.
+
     Examples:
         CERN-VIDEO-C-123-A      -> "a"
         CERN-VIDEO-C-402-A_pt1  -> "a"
@@ -272,6 +275,8 @@ def get_single_selector(event_id):
 
 def match_with_code(entries, event_id, value_code="a"):
     """
+    Match MARC-like groups against an event id selector.
+
     Returns:
         matches: matched values
         matched_groups: raw groups that matched this record

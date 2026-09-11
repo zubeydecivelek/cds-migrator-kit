@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """The RDM parent record for one migrated CDS record."""
+
 import re
 
 from flask import current_app

@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM CMS note model."""
+
 from cds_migrator_kit.rdm.records.transform.models.base_publication_record import (
     rdm_base_publication_model,
 )
@@ -15,14 +16,14 @@ from cds_migrator_kit.rdm.records.transform.models.research import ResearchModel
 class LEPResearchModel(ResearchModel):
     """Translation model for research."""
 
-    __query__ = '(710__.5:SI OR 710__.5:SC OR 710__.5:SL OR 710__.5:PS OR 710__.5:MPS OR 710__.5:ISR OR 710__.5:MSC OR 710__.5:AC OR 710__.5:SPS OR 710__.5:LEP OR 710__.5:AB OR 710__.5:AR) AND (980__:ARTICLE OR 980__:PREPRINT) OR 690C_.a:ISRRunning OR 690C_.a:ISRPerForm -980__:DELETED -980__.c:MIGRATED -980__.a:DUMMY -690C_.a:SCICOM -710__.5:TS -710__.5:ST -710__.5:MT -710__.5:EST -710__.5:SB -088:CERN-ALEPH-PUB-* -693__.e:ALEPH'
+    __query__ = "(710__.5:SI OR 710__.5:SC OR 710__.5:SL OR 710__.5:PS OR 710__.5:MPS OR 710__.5:ISR OR 710__.5:MSC OR 710__.5:AC OR 710__.5:SPS OR 710__.5:LEP OR 710__.5:AB OR 710__.5:AR) AND (980__:ARTICLE OR 980__:PREPRINT) OR 690C_.a:ISRRunning OR 690C_.a:ISRPerForm -980__:DELETED -980__.c:MIGRATED -980__.a:DUMMY -690C_.a:SCICOM -710__.5:TS -710__.5:ST -710__.5:MT -710__.5:EST -710__.5:SB -088:CERN-ALEPH-PUB-* -693__.e:ALEPH"
 
     __ignore_keys__ = {
-        "594__a", # can be ignored for this collection
-        "775__p", # can be ignored for this collection - title of another volume
-        "775__c", # year of volume
-        "596__a", # multivolume tag
-        "300__x", # drop the physical description
+        "594__a",  # can be ignored for this collection
+        "775__p",  # can be ignored for this collection - title of another volume
+        "775__c",  # year of volume
+        "596__a",  # multivolume tag
+        "300__x",  # drop the physical description
         "8564_z",  # file comment, migrated via file metadata
         "0248_a",
         "0248_p",

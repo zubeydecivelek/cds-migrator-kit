@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """YAML-backed vocabulary lookup used by custom_fields mappers."""
+
 from pathlib import Path
 
 import yaml

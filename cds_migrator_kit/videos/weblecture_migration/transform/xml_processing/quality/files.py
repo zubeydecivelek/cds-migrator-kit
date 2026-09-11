@@ -19,6 +19,7 @@ from cds_migrator_kit.errors import ManualImportRequired
 def get_files_by_recid(recid, directory):
     """
     Search JSON files in a directory for a given recid.
+
     Return a list of all "files" dicts for that recid.
     Stop searching after the first file that contains it.
     """

@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """Composed lists of field mappers used by RecordEntry."""
+
 from cds_migrator_kit.rdm.records.transform.mappers.base import (
     PassthroughCustomFieldMapper,
     PassthroughMapper,

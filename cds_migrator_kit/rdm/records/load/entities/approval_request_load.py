@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """Creates and approves a migrated EP committee approval request."""
+
 from cds_rdm.requests.committee_approval import APPRN_PID_TYPE, CommitteeApprovalRequest
 from flask import current_app
 from invenio_access.permissions import system_identity
@@ -247,6 +248,4 @@ class ApprovalRequestLoad:
         self._create_reviewing_log_event(request, uow)
         self._apply_approved_entry(request, uow)
 
-        uow.register(
-            RecordCommitOp(request, indexer=current_requests_service.indexer)
-        )
+        uow.register(RecordCommitOp(request, indexer=current_requests_service.indexer))

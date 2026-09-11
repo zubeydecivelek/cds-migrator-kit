@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """``metadata`` field mappers for CDS to RDM record transformation."""
+
 from dateutil.parser import parse
 
 from cds_migrator_kit.errors import MissingRequiredField, UnexpectedValue

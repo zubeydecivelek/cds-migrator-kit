@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM migration stats module."""
+
 from cds_dojson.overdo import OverdoBase
 
 users_migrator_marc21 = OverdoBase(

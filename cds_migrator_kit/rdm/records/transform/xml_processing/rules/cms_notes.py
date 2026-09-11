@@ -7,7 +7,6 @@
 
 """CDS-RDM migration rules module."""
 
-
 from cds_migrator_kit.transform.xml_processing.quality.decorators import require
 
 from ...models.note import cms_note_model

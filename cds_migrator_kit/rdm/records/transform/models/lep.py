@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM CMS note model."""
+
 from cds_migrator_kit.rdm.records.transform.models.base_publication_record import (
     rdm_base_publication_model,
 )
@@ -18,11 +19,11 @@ class LEPResearchModel(ResearchModel):
     __query__ = '980__:L3_Papers OR 980__:INTNOTEALEPHPRIV OR 980__:OPAL_Papers OR 980__:OPAL_Misc OR 980__:DELPHI_Misc OR 980__:DELPHI_Papers OR 980__:L3_Misc OR 693__.e:L3 OR 693__.e:RE4 OR 693__.e:DELPHI OR 693__.e:OPAL OR 693__.e:ALEPH OR 690C_.a:PUBLDELPHINOTE OR 690C_.a:PRIVDELPHINOTE OR 710__.g:"ALEPH Collaboration" OR 710__.g:"Aleph Collaboration" OR 980__.a:ALEPH_Papers OR 980__.a:ALEPHDRAFT OR 037__:CERN-ALEPH-PUB-* OR 088__:CERN-ALEPH-PUB-* OR 037__:CERN-ALEPH-ARCH-DATA-* OR 088__:CERN-ALEPH-ARCH-DATA-* -980__:THESIS -037__:CERN-STUDENTS-Note-* -980__:DELETED -980__.c:MIGRATED -980__.a:DUMMY -690C_.a:SCICOM'
 
     __ignore_keys__ = {
-        "594__a", # can be ignored for this collection
-        "775__p", # can be ignored for this collection - title of another volume
-        "775__c", # year of volume
-        "596__a", # multivolume tag
-        "300__x", # drop the physical description
+        "594__a",  # can be ignored for this collection
+        "775__p",  # can be ignored for this collection - title of another volume
+        "775__c",  # year of volume
+        "596__a",  # multivolume tag
+        "300__x",  # drop the physical description
         "8564_z",  # file comment, migrated via file metadata
         "0248_a",
         "0248_p",

@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM Staff Association model."""
+
 from cds_migrator_kit.rdm.records.transform.models.bulletin_issue import (
     bull_issue_model,
 )

@@ -1,3 +1,5 @@
+"""CDS-RDM bulletin issue rules."""
+
 import re
 from urllib.parse import ParseResult, urlparse
 
@@ -39,7 +41,6 @@ def creators(self, key, value):
 @require(["a"])
 def additional_titles_bulletin(self, key, value):
     """Translate additional titles."""
-
     # many records are missing main title, reuse the 246 field if missing
     title = value.get("a")
     if title and "title" not in self:
@@ -53,7 +54,6 @@ def additional_titles_bulletin(self, key, value):
 @model.over("description", "^520__", override=True)
 def description(self, key, value):
     """Translates description."""
-
     description_text = value.get("a", "")
     description_text_b = value.get("b", "")
     description_text = description_text.replace("<!--HTML-->", "").strip()
@@ -128,6 +128,7 @@ def imprint_info(self, key, value):
 
 @model.over("custom_fields", "(^773__)")
 def journal(self, key, value):
+    """Translates journal fields."""
     _custom_fields = self.get("custom_fields", {})
     journal_fields = _custom_fields.get("journal:journal", {})
 
@@ -149,6 +150,7 @@ def journal(self, key, value):
 @model.over("additional_descriptions", "(^500__)")
 @for_each_value
 def additional_descriptions(self, key, value):
+    """Translates additional descriptions."""
     description = value.get("a", "").strip()
     curated_dm = value.get("9", "").strip()
     if "curated" in curated_dm:
@@ -163,6 +165,7 @@ def additional_descriptions(self, key, value):
 @model.over("additional_descriptions", "(^590__)")
 @for_each_value
 def translated_description(self, key, value):
+    """Translates translated description."""
     description_text = value.get("a", "")
     description_text_b = value.get("b", "")
     description_text = description_text.replace("<!--HTML-->", "").strip()
@@ -185,6 +188,7 @@ def translated_description(self, key, value):
 @model.over("subjects", "(^650[12_][7_])|(^6531_)", override=True)
 @for_each_value
 def subjects_bulletin(self, key, value):
+    """Translates bulletin subjects."""
     subject = value.get("a", "").strip()
     scheme = value.get("2", "").strip()
     if scheme in ["EuCARD2", "AIDA-2020"]:
@@ -196,6 +200,7 @@ def subjects_bulletin(self, key, value):
 @model.over("url_identifiers", "^8564_", override=True)
 @for_each_value
 def urls_bulletin(self, key, value):
+    """Translates bulletin URLs."""
     content_type = value.get("x", "")
     if content_type == "icon":
         # ignore icon urls (conditionally ignoring by accessing the value
@@ -230,6 +235,7 @@ def urls_bulletin_bis(self, key, value):
 
 @model.over("custom_fields_journal", "(^916__)", override=True)
 def custom_fields_journal(self, key, value):
+    """Translates journal custom fields."""
     _custom_fields = self.get("custom_fields", {})
 
     issue = value.get("z")
@@ -276,6 +282,7 @@ def bulletin_report_number(self, key, value):
 
 @model.over("custom_fields", "(^925__)")
 def issue_number(self, key, value):
+    """Translates issue number."""
     _custom_fields = self.get("custom_fields", {})
 
     issue_start = value.get("a")
@@ -293,6 +300,7 @@ def issue_number(self, key, value):
 @model.over("bull_related_identifiers_1", "(^941__)")
 @for_each_value
 def bull_related_identifiers(self, key, value):
+    """Translates bulletin related identifiers."""
     id = value.get("a")
     resource_type = value.get("t", "other")
     scheme = "other"

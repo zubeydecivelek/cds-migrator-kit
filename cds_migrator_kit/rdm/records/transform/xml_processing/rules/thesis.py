@@ -17,6 +17,7 @@
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 """CDS-RDM migration rules module."""
+
 import re
 
 from dateutil.parser import ParserError, parse
@@ -192,6 +193,7 @@ def thesis(self, key, value):
 @model.over("dates", "(^500__)")
 @for_each_value
 def dates(self, key, value):
+    """Translates date fields."""
     text = value.get("a", "")
     source = value.get("9", "")
     # redundant information from arxiv
@@ -237,6 +239,7 @@ def dates(self, key, value):
 
 @model.over("funding", "(^536__)", override=True)
 def funding(self, key, value):
+    """Translates funding information."""
     _custom_fields = self.get("custom_fields", {})
     programme = value.get("a")
     _access_info = value.get("r", "").strip().lower()
@@ -278,6 +281,7 @@ def funding(self, key, value):
 @model.over("affiliations", "^901__", override_tag=True)
 @for_each_value
 def rec_affiliation(self, key, value):
+    """Translates record affiliation."""
     affiliation = value.get("u", "")
     if type(affiliation) is not str:
         raise UnexpectedValue(f"Record affiliation has a wrong format.")
@@ -293,6 +297,7 @@ def rec_affiliation(self, key, value):
 @model.over("resource_type", "^980__", override=True)
 @for_each_value
 def collection(self, key, value):
+    """Translates collection into resource type."""
     col = value.get("a", "")
     colb = value.get("b", "")
     if type(col) != str or type(colb) != str:

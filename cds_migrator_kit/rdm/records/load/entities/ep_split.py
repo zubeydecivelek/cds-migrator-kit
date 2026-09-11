@@ -58,6 +58,7 @@ class MetadataEntry:
     """Build a load entry for the public or restricted EP approval split."""
 
     def __init__(self, entry: MigrationEntry, approval_request, migration_logger):
+        """Constructor."""
         self.entry = entry
         self.approval_request = approval_request
         self.migration_logger = migration_logger
@@ -215,6 +216,7 @@ class PublicEntry(MetadataEntry):
         return "No public files found to load for EP approval public split"
 
     def identifiers(self, identifiers):
+        """Return identifiers for the public split, dropping EP approval RNs."""
         kept = []
         removed = []
         for id_entry in identifiers:
@@ -317,6 +319,7 @@ class RestrictedEntry(MetadataEntry):
         return "No files found to load for EP approval restricted split"
 
     def identifiers(self, identifiers):
+        """Return identifiers for the restricted split, keeping draft RNs."""
         kept = []
         removed = []
         for id_entry in identifiers:

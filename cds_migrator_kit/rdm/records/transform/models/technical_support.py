@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM CMS note model."""
+
 from cds_migrator_kit.rdm.records.transform.models.base_publication_record import (
     rdm_base_publication_model,
 )
@@ -25,15 +26,15 @@ class TechnicalSupportModel(CdsOverdo):
     __ignore_keys__ = {
         "030__a",
         "690c_a",
-        "595__i", # "INSPEC"  id
-        "500__9", # source of notes
-        "035__z", 
+        "595__i",  # "INSPEC"  id
+        "500__9",  # source of notes
+        "035__z",
         "0248_a",
         "0248_p",
         "0248_q",
         "100__m",  # email of contributor
-        "110__c", # Location of corporate author
-        "110__g", # Type of corporate author
+        "110__c",  # Location of corporate author
+        "110__g",  # Type of corporate author
         "340__a",  # Physical medium
         "037__c",  # arxiv subject
         "300__a",  # number of pages
@@ -62,7 +63,9 @@ class TechnicalSupportModel(CdsOverdo):
         "964__a",  # number of physical copies
     }
 
-    _default_fields = {"custom_fields": {},}
+    _default_fields = {
+        "custom_fields": {},
+    }
 
 
 technical_support_model = TechnicalSupportModel(

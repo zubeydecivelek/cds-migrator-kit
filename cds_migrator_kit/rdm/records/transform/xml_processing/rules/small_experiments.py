@@ -1,11 +1,15 @@
+"""CDS-RDM small experiments rules."""
+
 from dateutil.parser import ParserError, parse
 from dojson.errors import IgnoreKey
 
 from cds_migrator_kit.errors import UnexpectedValue
+from cds_migrator_kit.rdm.records.transform.models.antares import (
+    antares_research_model as model,
+)
 
 from .base import normalize
 
-from cds_migrator_kit.rdm.records.transform.models.antares import antares_research_model as model
 
 @model.over("publication_date", "(^225__)", override_tag=True)
 def imprint_info(self, key, value):

@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM transform step module."""
+
 import logging
 from copy import deepcopy
 
@@ -44,7 +45,7 @@ def affiliations_search(affiliation_name):
         except Exception as err:
             cli_logger.exception(err)
 
-    (chosen, affiliation) = get_ror_affiliation(affiliation_name)
+    chosen, affiliation = get_ror_affiliation(affiliation_name)
 
     return (chosen, affiliation)
 
@@ -76,7 +77,7 @@ class CDSToRDMAffiliationTransform(RDMRecordTransform):
                     "original_input": affiliation_name,
                 }
 
-                (chosen, match_or_suggestions) = affiliations_search(affiliation_name)
+                chosen, match_or_suggestions = affiliations_search(affiliation_name)
 
                 if chosen:
                     _affiliation.update(

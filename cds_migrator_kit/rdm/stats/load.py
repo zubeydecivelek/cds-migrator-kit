@@ -6,6 +6,7 @@
 # the terms of the MIT License; see LICENSE file for more details.
 
 """CDS-RDM migration load module."""
+
 import json
 import logging
 import os
@@ -197,7 +198,9 @@ class CDSRecordStatsLoad(Load):
 
         try:
             assert legacy_total["count"] == new_total["count"]
-            file_ids_msg = f" - Legacy file_ids: {file_ids}" if file_ids is not None else ""
+            file_ids_msg = (
+                f" - Legacy file_ids: {file_ids}" if file_ids is not None else ""
+            )
             logger.warning(
                 f"Successfully migrated statistics for {recid} `{event_type}` in RDM: {new_total['count']}{file_ids_msg}"
             )

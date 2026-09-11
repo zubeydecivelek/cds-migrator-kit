@@ -265,7 +265,6 @@ def record_restriction(self, key, value):
 @for_each_value
 def report_number(self, key, value):
     """Translates report_number fields."""
-
     identifier = value.get("a", "")
     identifier = StringValue(identifier).parse()
     existing_ids = self.get("related_identifiers", [])
@@ -1136,7 +1135,6 @@ def note(self, key, value):
 @for_each_value
 def additional_titles(self, key, value):
     """Translates additional titles."""
-
     additional_desc_text = value.get("p")
     volume = value.get("n")
     if additional_desc_text:
@@ -1207,6 +1205,7 @@ def validate_inspire_identifier(id_value, key):
 
 # Helper function
 def normalize(date_str):
+    """Normalize a date string to EDTF-compatible form."""
     date_str = date_str.strip()
 
     if date_str.count("/") == 1:  # Intervals
